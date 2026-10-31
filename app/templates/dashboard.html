@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SpendSmart{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Dashboard</h1>
+    <p>Your income, expenses and balance will show here soon.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('main.index') }}" class="btn btn-outline">Back to home</a>
+    </div>
+  </section>
+{% endblock %}

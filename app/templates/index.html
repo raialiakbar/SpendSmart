@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <section class="hero">
+    <h1>Take control of your <span>money</span></h1>
+    <p>Track your income and expenses, see where your money goes, and stay on top of your balance, all in one place.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('main.register') }}" class="btn btn-primary">Get started</a>
+      <a href="{{ url_for('main.login') }}" class="btn btn-outline">I already have an account</a>
+    </div>
+  </section>
+{% endblock %}
