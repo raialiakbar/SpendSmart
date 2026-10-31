@@ -19,6 +19,10 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=utc_now)
     last_login_at = db.Column(db.DateTime)
 
+    transactions = db.relationship(
+        "Transaction", back_populates="user", cascade="all, delete-orphan"
+    )
+
     def __repr__(self):
         return f"<User {self.username}>"
 
@@ -36,6 +40,8 @@ class Transaction(db.Model):
     payment_method = db.Column(db.String(20))  # e.g. "cash", "card", "bank_transfer"
     created_at = db.Column(db.DateTime, nullable=False, default=utc_now)
     updated_at = db.Column(db.DateTime, nullable=False, default=utc_now, onupdate=utc_now)
+
+    user = db.relationship("User", back_populates="transactions")
 
     __table_args__ = (
         db.CheckConstraint("type IN ('income', 'expense')", name="ck_transaction_type"),
