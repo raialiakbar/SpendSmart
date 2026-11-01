@@ -3,11 +3,47 @@
 {% block title %}Register - SpendSmart{% endblock %}
 
 {% block content %}
-  <section class="hero">
-    <h1>Register</h1>
-    <p>The registration form is coming soon.</p>
-    <div class="hero-actions">
-      <a href="{{ url_for('main.index') }}" class="btn btn-outline">Back to home</a>
-    </div>
-  </section>
+
+<section class="register-section">
+
+  <div class="register-card">
+
+    <h1>Create your account</h1>
+
+    <p class="register-subtitle">
+      Start managing your personal finances with SpendSmart.
+    </p>
+
+    <form method="POST">
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Create a password" required>
+      </div>
+
+      <button type="submit" class="register-button">
+        Create Account
+      </button>
+
+    </form>
+
+    <p class="login-link">
+      Already have an account?
+      <a href="{{ url_for('main.login') }}">Login here</a>
+    </p>
+
+  </div>
+
+</section>
+
 {% endblock %}
