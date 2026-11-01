@@ -139,3 +139,19 @@ footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: cente
     text-decoration: none;
     font-weight: 600;
 }
+
+.alert {
+    padding: 12px;
+    margin: 20px 0;
+    border-radius: 6px;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #842029;
+}
