@@ -97,6 +97,9 @@ def transactions():
     return render_template("transactions.html")
 
 
-@main.route("/logout")
+@main.route("/logout", methods=["POST"])
 def logout():
+    session.clear()
+
+    flash("You have been logged out successfully.", "success")
     return redirect(url_for("main.index"))

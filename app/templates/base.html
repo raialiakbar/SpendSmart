@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}SpendSmart{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
   <header>
     <div class="container nav">
@@ -16,24 +18,27 @@
         <a href="{{ url_for('main.register') }}">Register</a>
         <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
         <a href="{{ url_for('main.transactions') }}">Transactions</a>
-        <a href="{{ url_for('main.logout') }}">Logout</a>
+        <form method="POST" action="{{ url_for('main.logout') }}">
+          <button type="submit" class="logout-button">Logout</button>
+        </form>
       </nav>
     </div>
   </header>
 
   <main class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">
-          {{ message }}
-        </div>
-      {% endfor %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+      {{ message }}
+    </div>
+    {% endfor %}
     {% endwith %}
     {% block content %}{% endblock %}
-</main>
+  </main>
 
   <footer>
     <div class="container">SpendSmart &middot; Personal spending tracker</div>
   </footer>
 </body>
+
 </html>
