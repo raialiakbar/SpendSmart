@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for, request, flash
+from flask import Blueprint, redirect, render_template, url_for, request, flash, session
 from sqlalchemy.exc import IntegrityError
 
 from app.extensions import db
@@ -11,8 +11,35 @@ def index():
     return render_template("index.html")
 
 
-@main.route("/login")
+@main.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        # Get form data
+        username_or_email = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+
+        # Validate required fields
+        if not username_or_email or not password:
+            flash("Please enter your username/email and password.", "error")
+            return render_template("login.html")
+
+        # Find user by username or email
+        user = User.query.filter(
+            (User.username == username_or_email) |
+            (User.email == username_or_email.lower())
+        ).first()
+
+        # Verify user and password
+        if user is None or not user.check_password(password):
+            flash("Invalid username/email or password.", "error")
+            return render_template("login.html")
+
+        # Store user ID in session
+        session.clear()
+        session["user_id"] = user.id
+
+        flash("Login successful! Welcome back.", "success")
+        return redirect(url_for("main.dashboard"))
     return render_template("login.html")
 
 
