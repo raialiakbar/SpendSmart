@@ -29,6 +29,16 @@ def register():
             flash("Please fill in all fields.", "error")
             return render_template("register.html")
 
+        # Check for existing username
+        if User.query.filter_by(username=username).first():
+            flash("This username is already taken.", "error")
+            return render_template("register.html")
+
+        # Check for existing email
+        if User.query.filter_by(email=email).first():
+            flash("This email address is already taken.", "error")
+            return render_template("register.html")
+
         # Create new user
         new_user = User(
             username=username,
@@ -39,18 +49,12 @@ def register():
         try:
             db.session.add(new_user)
             db.session.commit()
-            flash(
-                "Registration successful! You can now log in.",
-                "success"
-            )
+            flash("Registration successful! You can now log in.", "success")
             return redirect(url_for("main.login"))
 
         except IntegrityError:
             db.session.rollback()
-            flash(
-                "Username or email already exists.",
-                "error"
-            )
+            flash("Username or email already exists.", "error")
             return render_template("register.html")
         
     return render_template("register.html")
