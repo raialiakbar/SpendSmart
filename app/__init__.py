@@ -12,7 +12,10 @@ def create_app(config_class=Config):
     from app import models  # noqa: F401
 
     from app.routes import main
+    from app.auth import auth
+
     app.register_blueprint(main)
+    app.register_blueprint(auth)
 
     with app.app_context():
         db.create_all()

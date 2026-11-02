@@ -14,11 +14,11 @@
       <a href="{{ url_for('main.index') }}" class="logo">SpendSmart</a>
       <nav class="nav-links">
         <a href="{{ url_for('main.index') }}">Home</a>
-        <a href="{{ url_for('main.login') }}">Login</a>
-        <a href="{{ url_for('main.register') }}">Register</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
         <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
         <a href="{{ url_for('main.transactions') }}">Transactions</a>
-        <form method="POST" action="{{ url_for('main.logout') }}">
+        <form method="POST" action="{{ url_for('auth.logout') }}">
           <button type="submit" class="logout-button">Logout</button>
         </form>
       </nav>
