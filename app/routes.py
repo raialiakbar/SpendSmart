@@ -1,10 +1,21 @@
 from flask import Blueprint, redirect, render_template, url_for, request, flash, session
+from functools import wraps
 from sqlalchemy.exc import IntegrityError
 
 from app.extensions import db
 from app.models import User
 
 main = Blueprint("main", __name__)
+
+def login_required(route_function):
+    @wraps(route_function)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            flash("Please log in to access this page.", "error")
+            return redirect(url_for("main.login"))
+
+        return route_function(*args, **kwargs)
+    return decorated_function
 
 @main.route("/")
 def index():
@@ -88,11 +99,13 @@ def register():
 
 
 @main.route("/dashboard")
+@login_required
 def dashboard():
     return render_template("dashboard.html")
 
 
 @main.route("/transactions")
+@login_required
 def transactions():
     return render_template("transactions.html")
 
