@@ -16,16 +16,28 @@ fix/login-validation
 ```
 
 3. Make and test the required changes on the feature branch.
-4. Commit changes using clear commit messages, for example:
+4. Commit changes using clear commit messages that start with one of these prefixes:
+
+| Prefix | Use for |
+| --- | --- |
+| `feat:` | a new feature |
+| `fix:` | a bug fix |
+| `docs:` | README or other documentation |
+| `test:` | adding or updating tests |
+| `refactor:` | code changes that don't change behaviour |
+| `chore:` | setup, dependencies, config |
+
+Examples:
 
 ```text
 feat: add transaction model
 fix: correct transaction validation
 docs: update git workflow
+test: add tests for login
 ```
 
 5. Push the feature branch to GitHub.
-6. Create a Pull Request from the feature branch into `main`.
+6. Create a Pull Request from the feature branch into `main`. The PR description is pre-filled from the template in `.github/pull_request_template.md`; fill it in.
 7. Link the Pull Request to the corresponding GitHub Issue where applicable, for example:
 
 ```text
