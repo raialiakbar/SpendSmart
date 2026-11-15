@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 
 from app.auth import login_required
+from app.dashboard import get_summary
+from app.extensions import db
+from app.models import User
 
 
 main = Blueprint("main", __name__)
@@ -14,7 +17,10 @@ def index():
 @main.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    summary = get_summary(session["user_id"])
+    user = db.session.get(User, session["user_id"])
+    currency = user.currency if user else "EUR"
+    return render_template("dashboard.html", summary=summary, currency=currency)
 
 
 @main.route("/transactions")

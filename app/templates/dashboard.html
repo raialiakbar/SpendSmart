@@ -3,11 +3,43 @@
 {% block title %}Dashboard - SpendSmart{% endblock %}
 
 {% block content %}
-  <section class="hero">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+  <section class="dashboard">
     <h1>Dashboard</h1>
-    <p>Your income, expenses and balance will show here soon.</p>
-    <div class="hero-actions">
-      <a href="{{ url_for('main.index') }}" class="btn btn-outline">Back to home</a>
+
+    <div class="dashboard-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total income</div>
+        <div class="stat-value stat-income">{{ "%.2f"|format(summary.total_income) }} {{ currency }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Total expenses</div>
+        <div class="stat-value stat-expense">{{ "%.2f"|format(summary.total_expenses) }} {{ currency }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Current balance</div>
+        <div class="stat-value">{{ "%.2f"|format(summary.balance) }} {{ currency }}</div>
+        <div class="stat-note">Income minus expenses</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Number of transactions</div>
+        <div class="stat-value">{{ summary.transaction_count }}</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">Top spending category</div>
+        {% if summary.top_category %}
+          <div class="stat-value">{{ summary.top_category }}</div>
+          <div class="stat-note">{{ "%.2f"|format(summary.top_category_total) }} {{ currency }} spent</div>
+        {% else %}
+          <div class="stat-value">&ndash;</div>
+          <div class="stat-note">No expenses yet</div>
+        {% endif %}
+      </div>
     </div>
   </section>
 {% endblock %}
