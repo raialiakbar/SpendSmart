@@ -87,6 +87,12 @@ def list_transactions():
     )
 
 
+def get_own_transaction_or_404(transaction_id):
+    return Transaction.query.filter_by(
+        id=transaction_id, user_id=session["user_id"]
+    ).first_or_404()
+
+
 def render_form(form, title, status=200):
     return render_template(
         "transaction_form.html",
@@ -126,7 +132,7 @@ def add_transaction():
 @transactions.route("/<int:transaction_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_transaction(transaction_id):
-    transaction = db.get_or_404(Transaction, transaction_id)
+    transaction = get_own_transaction_or_404(transaction_id)
 
     if request.method == "POST":
         data, errors = parse_transaction_form(request.form)
@@ -157,7 +163,7 @@ def edit_transaction(transaction_id):
 @transactions.route("/<int:transaction_id>/delete", methods=["POST"])
 @login_required
 def delete_transaction(transaction_id):
-    transaction = db.get_or_404(Transaction, transaction_id)
+    transaction = get_own_transaction_or_404(transaction_id)
     db.session.delete(transaction)
     db.session.commit()
 

@@ -93,3 +93,25 @@ def test_delete_transaction(app, logged_in_client):
 
     with app.app_context():
         assert Transaction.query.count() == 0
+
+
+def test_cannot_edit_or_delete_other_users_transaction(app, client):
+    create_user(app, "alice", "alice@example.com")
+    create_user(app, "bob", "bob@example.com")
+
+    login(client, "alice")
+    data = {"amount": "99", "category": "Rent", "date": "2026-11-01"}
+    client.post("/transactions/new", data=data)
+    client.post("/logout")
+
+    with app.app_context():
+        transaction_id = Transaction.query.one().id
+
+    login(client, "bob")
+    assert client.get(f"/transactions/{transaction_id}/edit").status_code == 404
+    data.update(amount="1")
+    assert client.post(f"/transactions/{transaction_id}/edit", data=data).status_code == 404
+    assert client.post(f"/transactions/{transaction_id}/delete").status_code == 404
+
+    with app.app_context():
+        assert Transaction.query.one().amount == Decimal("99.00")
