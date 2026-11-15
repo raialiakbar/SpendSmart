@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from app.models import Transaction, User
+from tests.conftest import create_user, login
 
 
 def test_add_expense_saves_for_current_user(app, logged_in_client):
@@ -44,3 +45,18 @@ def test_transactions_list_shows_details(app, logged_in_client):
     assert response.status_code == 200
     for text in [b"01.11.2026", b"Expense", b"Food", b"12.50", b"Groceries"]:
         assert text in response.data
+
+
+def test_user_only_sees_own_transactions(app, client):
+    create_user(app, "alice", "alice@example.com")
+    create_user(app, "bob", "bob@example.com")
+
+    login(client, "alice")
+    data = {"amount": "99", "category": "Rent", "date": "2026-11-01", "description": "Alice rent"}
+    client.post("/transactions/new", data=data)
+    client.post("/logout")
+
+    login(client, "bob")
+    response = client.get("/transactions/")
+    assert b"Alice rent" not in response.data
+    assert b"No transactions yet" in response.data
