@@ -60,3 +60,20 @@ def test_user_only_sees_own_transactions(app, client):
     response = client.get("/transactions/")
     assert b"Alice rent" not in response.data
     assert b"No transactions yet" in response.data
+
+
+def test_edit_transaction_saves_changes(app, logged_in_client):
+    data = {"amount": "12.50", "category": "Food", "date": "2026-11-01", "description": "Groceries"}
+    logged_in_client.post("/transactions/new", data=data)
+
+    with app.app_context():
+        transaction_id = Transaction.query.one().id
+
+    data.update(amount="20", description="Dinner")
+    response = logged_in_client.post(f"/transactions/{transaction_id}/edit", data=data)
+    assert response.status_code == 302
+
+    with app.app_context():
+        transaction = Transaction.query.one()
+        assert transaction.amount == Decimal("20.00")
+        assert transaction.description == "Dinner"

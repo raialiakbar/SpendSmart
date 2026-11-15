@@ -465,3 +465,21 @@ footer {
   background: var(--surface);
   border-radius: var(--radius);
 }
+
+.transactions-table .actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.transactions-table .actions a,
+.transactions-table .actions button {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: inherit;
+  font-family: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

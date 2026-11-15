@@ -121,3 +121,34 @@ def add_transaction():
         transaction_type = "expense"
     form = {"type": transaction_type, "date": date.today().isoformat()}
     return render_form(form, f"Add {transaction_type}")
+
+
+@transactions.route("/<int:transaction_id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_transaction(transaction_id):
+    transaction = db.get_or_404(Transaction, transaction_id)
+
+    if request.method == "POST":
+        data, errors = parse_transaction_form(request.form)
+
+        if errors:
+            for error in errors:
+                flash(error, "error")
+            return render_form(request.form, "Edit transaction", 400)
+
+        for field, value in data.items():
+            setattr(transaction, field, value)
+        db.session.commit()
+
+        flash("Transaction updated.", "success")
+        return redirect(url_for("transactions.list_transactions"))
+
+    form = {
+        "type": transaction.type,
+        "amount": f"{transaction.amount:.2f}",
+        "category": transaction.category,
+        "date": transaction.date.isoformat(),
+        "description": transaction.description or "",
+        "payment_method": transaction.payment_method or "",
+    }
+    return render_form(form, "Edit transaction")

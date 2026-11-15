@@ -22,6 +22,7 @@
             <th>Category</th>
             <th class="amount">Amount</th>
             <th>Description</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +35,9 @@
               {{ '-' if transaction.type == 'expense' else '+' }}{{ '%.2f' % transaction.amount }} {{ transaction.user.currency }}
             </td>
             <td>{{ transaction.description or '' }}</td>
+            <td class="actions">
+              <a href="{{ url_for('transactions.edit_transaction', transaction_id=transaction.id) }}">Edit</a>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
