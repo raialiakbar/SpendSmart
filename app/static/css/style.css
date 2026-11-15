@@ -331,3 +331,69 @@ footer {
 .logout-button:hover {
   color: #2563eb;
 }
+
+/* Transaction Form */
+.form-section {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 35px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.form-card h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.form-subtitle {
+  text-align: center;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.form-group select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 15px;
+  background: white;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #198754;
+}
+
+.form-button {
+  width: 100%;
+  padding: 13px;
+  background-color: #198754;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-button:hover {
+  background-color: #157347;
+}
+
+.form-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.form-link a {
+  color: #198754;
+  font-weight: 600;
+}

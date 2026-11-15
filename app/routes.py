@@ -15,9 +15,3 @@ def index():
 @login_required
 def dashboard():
     return render_template("dashboard.html")
-
-
-@main.route("/transactions")
-@login_required
-def transactions():
-    return render_template("transactions.html")

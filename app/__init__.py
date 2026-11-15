@@ -13,9 +13,11 @@ def create_app(config_class=Config):
 
     from app.routes import main
     from app.auth import auth
+    from app.transactions import transactions
 
     app.register_blueprint(main)
     app.register_blueprint(auth)
+    app.register_blueprint(transactions)
 
     with app.app_context():
         db.create_all()
