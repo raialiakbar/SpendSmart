@@ -34,3 +34,13 @@ def test_add_income_saves_for_current_user(app, logged_in_client):
         income = Transaction.query.one()
         assert income.type == "income"
         assert income.amount == Decimal("1500.00")
+
+
+def test_transactions_list_shows_details(app, logged_in_client):
+    data = {"amount": "12.50", "category": "Food", "date": "2026-11-01", "description": "Groceries"}
+    logged_in_client.post("/transactions/new", data=data)
+
+    response = logged_in_client.get("/transactions/")
+    assert response.status_code == 200
+    for text in [b"01.11.2026", b"Expense", b"Food", b"12.50", b"Groceries"]:
+        assert text in response.data

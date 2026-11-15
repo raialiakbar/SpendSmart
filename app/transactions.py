@@ -75,7 +75,16 @@ def parse_transaction_form(form):
 @transactions.route("/")
 @login_required
 def list_transactions():
-    return render_template("transactions.html")
+    user_transactions = (
+        Transaction.query.filter_by(user_id=session["user_id"])
+        .order_by(Transaction.date.desc(), Transaction.id.desc())
+        .all()
+    )
+    return render_template(
+        "transactions.html",
+        transactions=user_transactions,
+        transaction_types=TRANSACTION_TYPES,
+    )
 
 
 def render_form(form, title, status=200):
