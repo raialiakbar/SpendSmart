@@ -7,7 +7,8 @@
     <h1>Transactions</h1>
     <p>Your list of transactions will show here soon.</p>
     <div class="hero-actions">
-      <a href="{{ url_for('transactions.add_expense') }}" class="btn btn-primary">Add expense</a>
+      <a href="{{ url_for('transactions.add_transaction', type='expense') }}" class="btn btn-primary">Add expense</a>
+      <a href="{{ url_for('transactions.add_transaction', type='income') }}" class="btn btn-primary">Add income</a>
       <a href="{{ url_for('main.index') }}" class="btn btn-outline">Back to home</a>
     </div>
   </section>

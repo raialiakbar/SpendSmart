@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Add expense - SpendSmart{% endblock %}
+{% block title %}{{ title }} - SpendSmart{% endblock %}
 
 {% block content %}
 
@@ -8,13 +8,22 @@
 
   <div class="form-card">
 
-    <h1>Add expense</h1>
+    <h1>{{ title }}</h1>
 
     <p class="form-subtitle">
-      Record where your money was spent.
+      Record money you spent or received.
     </p>
 
     <form method="POST">
+
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" name="type" required>
+          {% for value, label in transaction_types.items() %}
+          <option value="{{ value }}" {% if form.get('type') == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
 
       <div class="form-group">
         <label for="amount">Amount</label>
@@ -54,7 +63,7 @@
       </div>
 
       <button type="submit" class="form-button">
-        Save expense
+        Save
       </button>
 
     </form>

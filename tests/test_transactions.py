@@ -23,3 +23,14 @@ def test_add_expense_rejects_invalid_amount(app, logged_in_client):
 
     with app.app_context():
         assert Transaction.query.count() == 0
+
+
+def test_add_income_saves_for_current_user(app, logged_in_client):
+    data = {"type": "income", "amount": "1500", "category": "Salary", "date": "2026-11-01"}
+    response = logged_in_client.post("/transactions/new", data=data)
+    assert response.status_code == 302
+
+    with app.app_context():
+        income = Transaction.query.one()
+        assert income.type == "income"
+        assert income.amount == Decimal("1500.00")

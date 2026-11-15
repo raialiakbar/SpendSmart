@@ -13,7 +13,7 @@ from flask import (
 
 from app.auth import login_required
 from app.extensions import db
-from app.models import CATEGORIES, PAYMENT_METHODS, Transaction
+from app.models import CATEGORIES, PAYMENT_METHODS, TRANSACTION_TYPES, Transaction
 
 transactions = Blueprint("transactions", __name__, url_prefix="/transactions")
 
@@ -21,6 +21,12 @@ transactions = Blueprint("transactions", __name__, url_prefix="/transactions")
 def parse_transaction_form(form):
     errors = []
     data = {}
+
+    transaction_type = form.get("type", "expense")
+    if transaction_type not in TRANSACTION_TYPES:
+        errors.append("Please choose expense or income.")
+    else:
+        data["type"] = transaction_type
 
     raw_amount = form.get("amount", "").strip().replace(",", ".")
     try:
@@ -72,32 +78,37 @@ def list_transactions():
     return render_template("transactions.html")
 
 
+def render_form(form, title, status=200):
+    return render_template(
+        "transaction_form.html",
+        form=form,
+        title=title,
+        categories=CATEGORIES,
+        payment_methods=PAYMENT_METHODS,
+        transaction_types=TRANSACTION_TYPES,
+    ), status
+
+
 @transactions.route("/new", methods=["GET", "POST"])
 @login_required
-def add_expense():
+def add_transaction():
     if request.method == "POST":
         data, errors = parse_transaction_form(request.form)
 
         if errors:
             for error in errors:
                 flash(error, "error")
-            return render_template(
-                "transaction_form.html",
-                form=request.form,
-                categories=CATEGORIES,
-                payment_methods=PAYMENT_METHODS,
-            ), 400
+            return render_form(request.form, "Add transaction", 400)
 
-        expense = Transaction(type="expense", user_id=session["user_id"], **data)
-        db.session.add(expense)
+        transaction = Transaction(user_id=session["user_id"], **data)
+        db.session.add(transaction)
         db.session.commit()
 
-        flash("Expense added.", "success")
+        flash(f"{TRANSACTION_TYPES[transaction.type]} added.", "success")
         return redirect(url_for("transactions.list_transactions"))
 
-    return render_template(
-        "transaction_form.html",
-        form={"date": date.today().isoformat()},
-        categories=CATEGORIES,
-        payment_methods=PAYMENT_METHODS,
-    )
+    transaction_type = request.args.get("type", "expense")
+    if transaction_type not in TRANSACTION_TYPES:
+        transaction_type = "expense"
+    form = {"type": transaction_type, "date": date.today().isoformat()}
+    return render_form(form, f"Add {transaction_type}")
