@@ -152,3 +152,14 @@ def edit_transaction(transaction_id):
         "payment_method": transaction.payment_method or "",
     }
     return render_form(form, "Edit transaction")
+
+
+@transactions.route("/<int:transaction_id>/delete", methods=["POST"])
+@login_required
+def delete_transaction(transaction_id):
+    transaction = db.get_or_404(Transaction, transaction_id)
+    db.session.delete(transaction)
+    db.session.commit()
+
+    flash("Transaction deleted.", "success")
+    return redirect(url_for("transactions.list_transactions"))

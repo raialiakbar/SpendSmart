@@ -77,3 +77,19 @@ def test_edit_transaction_saves_changes(app, logged_in_client):
         transaction = Transaction.query.one()
         assert transaction.amount == Decimal("20.00")
         assert transaction.description == "Dinner"
+
+
+def test_delete_transaction(app, logged_in_client):
+    data = {"amount": "12.50", "category": "Food", "date": "2026-11-01"}
+    logged_in_client.post("/transactions/new", data=data)
+
+    with app.app_context():
+        transaction_id = Transaction.query.one().id
+
+    response = logged_in_client.post(
+        f"/transactions/{transaction_id}/delete", follow_redirects=True
+    )
+    assert b"Transaction deleted." in response.data
+
+    with app.app_context():
+        assert Transaction.query.count() == 0
