@@ -21,9 +21,3 @@ def dashboard():
     user = db.session.get(User, session["user_id"])
     currency = user.currency if user else "EUR"
     return render_template("dashboard.html", summary=summary, currency=currency)
-
-
-@main.route("/transactions")
-@login_required
-def transactions():
-    return render_template("transactions.html")
