@@ -44,6 +44,11 @@ def get_summary(user_id):
         top_category = max(expenses_by_category, key=expenses_by_category.get)
         top_category_total = expenses_by_category[top_category]
 
+    chart_data = {
+        "income": float(total_income),
+        "expenses": float(total_expenses)
+    }
+
     return {
         "total_income": total_income,
         "total_expenses": total_expenses,
@@ -51,4 +56,5 @@ def get_summary(user_id):
         "transaction_count": len(transactions),
         "top_category": top_category,
         "top_category_total": top_category_total,
+        "chart_data": chart_data,
     }
