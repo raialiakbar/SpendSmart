@@ -1,6 +1,6 @@
 from datetime import date, datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from app.categories import CATEGORIES  # noqa: F401  (single list, see US-26)
 from app.extensions import db
 
 
@@ -9,7 +9,6 @@ TRANSACTION_TYPES = {
     "income": "Income",
 }
 
-CATEGORIES = ["Rent", "Food", "Transport", "Shopping", "Salary", "Other"]
 
 PAYMENT_METHODS = {
     "cash": "Cash",
