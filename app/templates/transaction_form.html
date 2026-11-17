@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - SpendSmart{% endblock %}
+
+{% block content %}
+
+<section class="form-section">
+
+  <div class="form-card">
+
+    <h1>{{ title }}</h1>
+
+    <p class="form-subtitle">
+      Record money you spent or received.
+    </p>
+
+    <form method="POST">
+
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" name="type" required>
+          {% for value, label in transaction_types.items() %}
+          <option value="{{ value }}" {% if form.get('type') == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" name="amount" step="0.01" min="0.01" placeholder="0.00"
+          value="{{ form.get('amount', '') }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="">Choose a category</option>
+          {% for category in categories %}
+          <option value="{{ category }}" {% if form.get('category') == category %}selected{% endif %}>{{ category }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" value="{{ form.get('date', '') }}" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" maxlength="255" placeholder="e.g. Groceries at Rewe"
+          value="{{ form.get('description', '') }}">
+      </div>
+
+      <div class="form-group">
+        <label for="payment_method">Payment method (optional)</label>
+        <select id="payment_method" name="payment_method">
+          <option value="">-</option>
+          {% for value, label in payment_methods.items() %}
+          <option value="{{ value }}" {% if form.get('payment_method') == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="form-button">
+        Save
+      </button>
+
+    </form>
+
+    <p class="form-link">
+      <a href="{{ url_for('transactions.list_transactions') }}">Back to transactions</a>
+    </p>
+
+  </div>
+
+</section>
+
+{% endblock %}

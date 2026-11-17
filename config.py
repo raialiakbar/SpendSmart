@@ -5,3 +5,9 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev")
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///spendsmart.db")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class TestConfig(Config):
+    TESTING = True
+    SECRET_KEY = "test"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"

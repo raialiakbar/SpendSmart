@@ -4,6 +4,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 
 
+TRANSACTION_TYPES = {
+    "expense": "Expense",
+    "income": "Income",
+}
+
+CATEGORIES = ["Rent", "Food", "Transport", "Shopping", "Salary", "Other"]
+
+PAYMENT_METHODS = {
+    "cash": "Cash",
+    "card": "Card",
+    "bank_transfer": "Bank transfer",
+}
+
+
 def utc_now():
     return datetime.now(timezone.utc)
 

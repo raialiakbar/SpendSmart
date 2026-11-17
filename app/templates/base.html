@@ -17,7 +17,7 @@
         <a href="{{ url_for('auth.login') }}">Login</a>
         <a href="{{ url_for('auth.register') }}">Register</a>
         <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
-        <a href="{{ url_for('main.transactions') }}">Transactions</a>
+        <a href="{{ url_for('transactions.list_transactions') }}">Transactions</a>
         <form method="POST" action="{{ url_for('auth.logout') }}">
           <button type="submit" class="logout-button">Logout</button>
         </form>
