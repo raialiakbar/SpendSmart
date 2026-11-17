@@ -29,18 +29,24 @@ def parse_transaction_form(form):
         data["type"] = transaction_type
 
     raw_amount = form.get("amount", "").strip().replace(",", ".")
-    try:
-        amount = Decimal(raw_amount)
-        if not amount.is_finite() or amount <= 0:
-            errors.append("Amount must be greater than 0.")
-        elif amount.as_tuple().exponent < -2:
-            errors.append("Amount can have at most 2 decimal places.")
-        elif amount >= Decimal("100000000"):
-            errors.append("Amount is too large.")
-        else:
-            data["amount"] = amount
-    except InvalidOperation:
-        errors.append("Please enter a valid amount.")
+
+    if not raw_amount:
+        errors.append("Please enter an amount.")
+    else: 
+        try:
+            amount = Decimal(raw_amount)
+            if not amount.is_finite():
+                errors.append("Please enter a valid amount.")
+            elif amount <= 0:
+                errors.append("Amount must be greater than 0.")
+            elif amount.as_tuple().exponent < -2:
+                errors.append("Amount can have at most 2 decimal places.")
+            elif amount >= Decimal("100000000"):
+                errors.append("Amount is too large.")
+            else:
+                data["amount"] = amount
+        except InvalidOperation:
+            errors.append("Please enter a valid amount.")
 
     category = form.get("category", "").strip()
     if category not in CATEGORIES:
@@ -50,7 +56,7 @@ def parse_transaction_form(form):
 
     raw_date = form.get("date", "").strip()
     if not raw_date:
-        data["date"] = date.today()
+        errors.append("Please enter a date.")
     else:
         try:
             data["date"] = date.fromisoformat(raw_date)

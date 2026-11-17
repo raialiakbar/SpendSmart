@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-card">
+        <div class="error-icon">🔍</div>
+
+        <p class="error-code">ERROR 404</p>
+        <h1>Oops! Page not found.</h1>
+
+        <p class="error-description">
+            The page you are looking for doesn't exist
+            or may have been moved.
+        </p>
+
+        <div class="error-actions">
+            <a href="{{ url_for('main.dashboard') }}" class="error-button">
+                Back to Dashboard
+            </a>
+
+            <a href="{{ url_for('main.index') }}" class="error-link">
+                Go to Homepage
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

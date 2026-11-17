@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from functools import wraps
 
 from flask import (
@@ -52,6 +53,10 @@ def login():
             flash("Invalid username/email or password.", "error")
             return render_template("login.html")
 
+        # Update last login timestamp
+        user.last_login_at = datetime.now(timezone.utc)
+        db.session.commit()
+        
         # Store user ID in session
         session.clear()
         session["user_id"] = user.id
