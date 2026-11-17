@@ -48,6 +48,10 @@ def get_summary(user_id):
         "income": float(total_income),
         "expenses": float(total_expenses)
     }
+    category_chart_data = {
+        "labels": list(expenses_by_category.keys()),
+        "values": [float(amount) for amount in expenses_by_category.values()]
+    }
 
     return {
         "total_income": total_income,
@@ -57,4 +61,5 @@ def get_summary(user_id):
         "top_category": top_category,
         "top_category_total": top_category_total,
         "chart_data": chart_data,
+        "category_chart_data": category_chart_data,
     }

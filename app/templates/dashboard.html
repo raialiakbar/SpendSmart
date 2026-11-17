@@ -45,7 +45,7 @@
     <div class="chart-card">
       <h2>Income vs. Expenses</h2>
 
-      <script id="chart-data" type="application/json">
+      <script id="chart-data" type="application/json" data-currency="{{ currency }}">
         {{ summary.chart_data | tojson }}
       </script>
 
@@ -53,52 +53,21 @@
         <canvas id="incomeExpenseChart"></canvas>
       </div>
     </div>
+
+    <div class="chart-card">
+      <h2>Spending by Category</h2>
+
+      <script id="category-chart-data" type="application/json">
+          {{ summary.category_chart_data | tojson }}
+      </script>
+
+      <div class="chart-container">
+          <canvas id="categoryChart"></canvas>
+      </div>
+    </div>
   
   </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-      const chartElement = document.getElementById("chart-data");
-      const chartData = JSON.parse(chartElement.textContent);
-
-      const ctx = document.getElementById("incomeExpenseChart");
-
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Finances"],
-          datasets: [
-            {
-              label: "Income",
-              data: [chartData.income],
-              backgroundColor: "#16a34a"
-            },
-            {
-              label: "Expenses",
-              data: [chartData.expenses],
-              backgroundColor: "#dc2626"
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "top"
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: "Amount ({{ currency }})"
-              }
-            }
-          }
-        }
-      });
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 {% endblock %}
