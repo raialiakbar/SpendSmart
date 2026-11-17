@@ -5,6 +5,7 @@ The route in routes.py only calls get_summary() and passes the result
 to the template.
 """
 
+from collections import defaultdict
 from decimal import Decimal
 
 from app.models import Transaction
@@ -27,6 +28,7 @@ def get_summary(user_id):
     total_income = Decimal("0")
     total_expenses = Decimal("0")
     expenses_by_category = {}
+    expenses_by_month = defaultdict(Decimal)
 
     for transaction in transactions:
         if transaction.type == "income":
@@ -37,6 +39,8 @@ def get_summary(user_id):
                 expenses_by_category.get(transaction.category, Decimal("0"))
                 + transaction.amount
             )
+            month = transaction.date.strftime("%Y-%m")
+            expenses_by_month[month] += transaction.amount
 
     top_category = None
     top_category_total = Decimal("0")
@@ -52,6 +56,10 @@ def get_summary(user_id):
         "labels": list(expenses_by_category.keys()),
         "values": [float(amount) for amount in expenses_by_category.values()]
     }
+    monthly_chart_data = {
+        "labels": sorted(expenses_by_month.keys()),
+        "values": [float(expenses_by_month[month]) for month in sorted(expenses_by_month.keys())]
+    }
 
     return {
         "total_income": total_income,
@@ -62,4 +70,5 @@ def get_summary(user_id):
         "top_category_total": top_category_total,
         "chart_data": chart_data,
         "category_chart_data": category_chart_data,
+        "monthly_chart_data": monthly_chart_data,
     }

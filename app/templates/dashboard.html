@@ -3,45 +3,46 @@
 {% block title %}Dashboard - SpendSmart{% endblock %}
 
 {% block content %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 
-  <section class="dashboard">
-    <h1>Dashboard</h1>
+<section class="dashboard">
+  <h1>Dashboard</h1>
 
-    <div class="dashboard-grid">
-      <div class="stat-card">
-        <div class="stat-label">Total income</div>
-        <div class="stat-value stat-income">{{ "%.2f"|format(summary.total_income) }} {{ currency }}</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Total expenses</div>
-        <div class="stat-value stat-expense">{{ "%.2f"|format(summary.total_expenses) }} {{ currency }}</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Current balance</div>
-        <div class="stat-value">{{ "%.2f"|format(summary.balance) }} {{ currency }}</div>
-        <div class="stat-note">Income minus expenses</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Number of transactions</div>
-        <div class="stat-value">{{ summary.transaction_count }}</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-label">Top spending category</div>
-        {% if summary.top_category %}
-          <div class="stat-value">{{ summary.top_category }}</div>
-          <div class="stat-note">{{ "%.2f"|format(summary.top_category_total) }} {{ currency }} spent</div>
-        {% else %}
-          <div class="stat-value">&ndash;</div>
-          <div class="stat-note">No expenses yet</div>
-        {% endif %}
-      </div>
+  <div class="dashboard-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total income</div>
+      <div class="stat-value stat-income">{{ "%.2f"|format(summary.total_income) }} {{ currency }}</div>
     </div>
 
+    <div class="stat-card">
+      <div class="stat-label">Total expenses</div>
+      <div class="stat-value stat-expense">{{ "%.2f"|format(summary.total_expenses) }} {{ currency }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Current balance</div>
+      <div class="stat-value">{{ "%.2f"|format(summary.balance) }} {{ currency }}</div>
+      <div class="stat-note">Income minus expenses</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Number of transactions</div>
+      <div class="stat-value">{{ summary.transaction_count }}</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Top spending category</div>
+      {% if summary.top_category %}
+      <div class="stat-value">{{ summary.top_category }}</div>
+      <div class="stat-note">{{ "%.2f"|format(summary.top_category_total) }} {{ currency }} spent</div>
+      {% else %}
+      <div class="stat-value">&ndash;</div>
+      <div class="stat-note">No expenses yet</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="charts-grid">
     <div class="chart-card">
       <h2>Income vs. Expenses</h2>
 
@@ -62,12 +63,26 @@
       </script>
 
       <div class="chart-container">
-          <canvas id="categoryChart"></canvas>
+        <canvas id="categoryChart"></canvas>
       </div>
     </div>
-  
-  </section>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
+    <div class="chart-card">
+      <h2>Monthly Spending</h2>
+
+      <script id="monthly-chart-data" type="application/json" data-currency="{{ currency }}">
+          {{ summary.monthly_chart_data | tojson }}
+      </script>
+
+      <div class="chart-container">
+        <canvas id="monthlySpendingChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/chart.umd.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
 {% endblock %}

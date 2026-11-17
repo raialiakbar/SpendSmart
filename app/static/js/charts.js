@@ -86,4 +86,54 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Monthly Spending chart
+    const monthlyElement = document.getElementById("monthly-chart-data");
+
+    if (monthlyElement) {
+        const monthlyData = JSON.parse(monthlyElement.textContent);
+        const monthlyCtx = document.getElementById("monthlySpendingChart");
+
+        new Chart(monthlyCtx, {
+            type: "line",
+            data: {
+                labels: monthlyData.labels,
+                datasets: [
+                    {
+                        label: "Monthly Expenses",
+                        data: monthlyData.values,
+                        borderColor: "#2563eb",
+                        backgroundColor: "rgba(37, 99, 235, 0.15)",
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "top"
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Amount (" + monthlyElement.dataset.currency + ")"
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Month"
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 });
