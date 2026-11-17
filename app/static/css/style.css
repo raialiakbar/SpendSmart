@@ -483,3 +483,79 @@ footer {
   border: none;
   cursor: pointer;
 }
+
+
+/* Error Page */
+.error-page {
+    min-height: 65vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+}
+
+.error-card {
+    width: 100%;
+    max-width: 560px;
+    padding: 45px 35px;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.error-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.error-code {
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.error-card h1 {
+    font-size: 30px;
+    margin: 12px 0;
+}
+
+.error-description {
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.error-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.error-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.error-button:hover {
+    opacity: 0.85;
+}
+
+.error-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.error-link:hover {
+    text-decoration: underline;
+}
