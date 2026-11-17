@@ -1,0 +1,45 @@
+/* Dashboard page (US-28 to US-32) */
+.dashboard {
+  padding: 48px 0;
+}
+
+.dashboard h1 {
+  margin-bottom: 24px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.stat-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stat-income {
+  color: var(--primary);
+}
+
+.stat-expense {
+  color: #b91c1c;
+}
