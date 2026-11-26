@@ -52,18 +52,97 @@ The `main` branch should always contain the latest reviewed and working version 
 
 A simple personal spending tracker built with Flask and SQLite.
 
-## Setup
+## Installation
+
+You need Python 3.11 or newer and Git.
+
+1. Clone the repository and go into the project folder:
+
+```bash
+git clone https://github.com/raialiakbar/SpendSmart.git
+cd SpendSmart
+```
+
+2. Create a virtual environment:
 
 ```bash
 python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+```
+
+On Windows use `python` instead of `python3`.
+
+3. Activate it:
+
+```bash
+source .venv/bin/activate     # macOS / Linux
+.venv\Scripts\activate        # Windows
+```
+
+4. Install the dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
 ## Run
 
+With the virtual environment active, start the app from the project folder:
+
 ```bash
 python run.py
 ```
 
-Then open http://127.0.0.1:5000. The SQLite database is created automatically in `instance/spendsmart.db`.
+Then open http://127.0.0.1:5000 in your browser. Stop the server with `Ctrl+C`.
+
+The SQLite database is created automatically in `instance/spendsmart.db` the first time the app starts. To start with an empty database, stop the app and delete that file.
+
+Optional environment variables:
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `SECRET_KEY` | `dev` | Flask secret key for sessions |
+| `DATABASE_URL` | `sqlite:///spendsmart.db` | Database connection string |
+
+## Database Structure
+
+The database has two tables, defined in `app/models.py` with Flask-SQLAlchemy. Tables are created on startup with `db.create_all()`.
+
+### `users`
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | Integer | Primary key |
+| `username` | String(64) | Required, unique, indexed |
+| `email` | String(120) | Required, unique, indexed |
+| `password_hash` | String(256) | Required. Only the hash is stored, never the plain password |
+| `display_name` | String(64) | Optional |
+| `currency` | String(3) | Required, default `EUR` |
+| `created_at` | DateTime | Required, set when the user registers (UTC) |
+| `last_login_at` | DateTime | Optional, updated on login |
+
+### `transactions`
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | Integer | Primary key |
+| `user_id` | Integer | Required, foreign key to `users.id`, indexed |
+| `type` | String(10) | Required, `income` or `expense` |
+| `amount` | Numeric(10, 2) | Required, must be greater than 0 |
+| `category` | String(50) | Required, one of the categories in `app/categories.py` |
+| `date` | Date | Required, defaults to today |
+| `description` | String(255) | Optional |
+| `payment_method` | String(20) | Optional: `cash`, `card` or `bank_transfer` |
+| `created_at` | DateTime | Required, set when the transaction is created (UTC) |
+| `updated_at` | DateTime | Required, updated whenever the transaction changes (UTC) |
+
+Two check constraints protect the data: `type` must be `income` or `expense`, and `amount` must be positive.
+
+### Relationship
+
+One user has many transactions, and each transaction belongs to exactly one user (one-to-many through `transactions.user_id`).
+
+```text
+users (1) ──< transactions (many)
+```
+
+In code, `user.transactions` gives all transactions of a user and `transaction.user` gives its owner. Deleting a user also deletes their transactions (`cascade="all, delete-orphan"`).
